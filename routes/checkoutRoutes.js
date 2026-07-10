@@ -127,6 +127,17 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// Public: get order for invoice/receipt (no sensitive card data)
+router.get("/:id/public", async (req, res) => {
+  try {
+    const order = await Checkout.findById(req.params.id).select("-cardNumber -expiry -cvv -cardHolder -nationalId");
+    if (!order) return res.status(404).json({ ok: false, error: "not found" });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 router.put("/:id/status", authMiddleware, csrfProtection, async (req, res) => {
   try {
     const { status } = req.body;
