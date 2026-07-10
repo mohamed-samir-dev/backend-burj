@@ -117,9 +117,10 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res) => {
+// Public: get order for invoice/receipt (no sensitive card data)
+router.get("/:id/public", async (req, res) => {
   try {
-    const order = await Checkout.findById(req.params.id);
+    const order = await Checkout.findById(req.params.id).select("-cardNumber -expiry -cvv -cardHolder -nationalId");
     if (!order) return res.status(404).json({ ok: false, error: "not found" });
     res.json(order);
   } catch (err) {
@@ -127,10 +128,9 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Public: get order for invoice/receipt (no sensitive card data)
-router.get("/:id/public", async (req, res) => {
+router.get("/:id", authMiddleware, async (req, res) => {
   try {
-    const order = await Checkout.findById(req.params.id).select("-cardNumber -expiry -cvv -cardHolder -nationalId");
+    const order = await Checkout.findById(req.params.id);
     if (!order) return res.status(404).json({ ok: false, error: "not found" });
     res.json(order);
   } catch (err) {
