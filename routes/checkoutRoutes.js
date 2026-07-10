@@ -79,7 +79,7 @@ function validateCheckoutBody(req, res, next) {
   next();
 }
 
-router.post("/", csrfProtection, checkoutLimiter, validateCheckoutBody, async (req, res) => {
+router.post("/", checkoutLimiter, validateCheckoutBody, async (req, res) => {
   try {
     const { orderId, whatsapp, nationalId } = req.validatedBody;
     // Check orderId uniqueness explicitly
