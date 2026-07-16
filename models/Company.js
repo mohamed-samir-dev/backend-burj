@@ -19,6 +19,7 @@ const companySchema = new mongoose.Schema({
   header: { type: String, default: "" },
   footer: { type: String, default: "" },
   stamp: { type: String, default: "" },
+  cancelStamp: { type: String, default: "" },
   qrImage: { type: String, default: "" },
   qrLink: { type: String, default: "" },
   img1: { type: String, default: "" },
